@@ -1,0 +1,63 @@
+ <html xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="relatorio :: html_head">
+		<meta charset="UTF-8"/>
+	</head>
+	<body>
+		<div class="invoice-box">
+	        <a href="#" onclick="window.history.back();" class="noprint">VOLTAR</a>
+	        <table cellpadding="0" cellspacing="0">
+	            <tr class="top">
+	            <td colspan="7">
+	                <table>
+	                <tr>
+	                    <td class="title">
+	                    <h4 th:text="${companyName}"></h4>
+	                    </td>
+	
+	                    <td>
+	                    <b>Relatório de movimentações</b><br> Emitido: <span th:text="${#dates.format(#dates.createNow(), 'dd/MM/YYYY')}"></span>
+	                    </td>
+	                </tr>
+	                </table>
+	            </td>
+	            </tr>
+	
+	            <tr class="heading">
+		            <td>
+		                Data
+		            </td>
+		            
+		            <td class="center">
+		                Valor
+		            </td>
+		            
+		            <td class="center">
+		                Cobrança
+		            </td>
+		
+					<td class="center">
+		                Tipo
+		            </td>
+		            
+		            <td class="center">
+		                Categoria
+		            </td>
+		
+		            <td class="right" colspan="2">
+		                Descrição
+		            </td>
+	            </tr>					
+				
+	            <tr class="item" th:each="movimentacao : ${listMovimentacoes}">
+	                <td th:text="${#temporals.format(movimentacao.dataMovimentacao, 'dd/MM/yyyy')}"></td> 
+					<td class="center" th:text="${'R&#36; ' + #numbers.formatDecimal(movimentacao.valor, 0, 'COMMA', 2, 'POINT')}"></td> 
+					<td class="center" th:text="${#temporals.format(movimentacao.dataCobranca, 'dd/MM/yyyy')}"></td>
+					<td class="center" th:text="${movimentacao.status}"></td>
+					<td class="center" th:text="${movimentacao.categoria}"></td>
+					<td class="right" colspan="2" th:text="${movimentacao.descricao}"></td>  
+	            </tr>
+	        </table>
+	    </div>
+	   	<script th:replace="relatorio :: footer_scripts"></script>
+	</body>
+</html>

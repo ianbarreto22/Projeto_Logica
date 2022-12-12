@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="layout :: head">
+		<meta charset="UTF-8">
+	</head>
+	<body>
+		<header th:replace="layout :: header"></header>
+		<main>
+			<div class="p-5 bg-light border rounded-3">
+	        	<h1>Dívidas</h1>
+	        	<p>As dívidas do seu comércio.</p>
+	        	<a type="button" href="/meu-comercio/dividas" class="btn mx-1 btn-outline-danger">Limpar Filtros</a>
+	        </div>
+	        
+	        <div class="p-5 bg-light border rounded-3">
+	        	<h3>Filtrar por data</h3>
+	        	<p>Filtre as movimentações que ainda não foram pagas pela data.</p>
+	        	
+	        	<input type="date" id="dataFiltro" th:value="${#dates.format(#dates.createNow(),'YYYY-MM-dd')}"></input><a type="button" onclick="filtrarData()" class="btn mx-1 btn-outline-info">Filtrar</a>
+	        </div>
+	        
+	        
+	        <table class="table table-bordered movimentacao-table">
+	        		<thead th:if="${movimentacoes.size != 0}">
+	        			<tr>
+	        				<th>Descrição</th>
+	        				<th>Data Cobrança</th>
+	        				<th>Categoria</th>
+	        				<th>Valor</th>
+	        				<th>Ação</th>
+	        			</tr>
+	        		</thead>
+	        		
+	        		<thead th:if="${movimentacoes.size == 0}">
+	        			<tr>
+	        				<th>Nenhuma dívida pendente.</th>
+	        			</tr>
+	        		</thead>
+	        		
+	        		<tbody id="movimentacaoTable">
+	        			<tr th:each="movimentacao : ${movimentacoes}">
+	        				<td th:text="${movimentacao.descricao}"></td>
+	        				<td th:text="${#temporals.format(movimentacao.dataCobranca, 'dd/MM/yyyy')}"></td>
+	        				<td th:text="${movimentacao.categoria}"></td>
+	        				<td th:text="${movimentacao.valor}"></td>
+	        				<td><a th:href="@{/meu-comercio/dividas/pagar/{id}(id = ${movimentacao.id})}" class="btn btn-danger"><i class="fas fa-credit-card"></i>&ensp;Pagar</a></td>
+	        			</tr>
+	        		</tbody>
+	        </table>
+		</main>
+		<footer th:replace="layout :: footer"></footer>
+	</body>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-dateFormat/1.0/jquery.dateFormat.min.js"></script>
+	<script type="text/javascript">
+	function filtrarData(){
+		var value = $("#dataFiltro").val();
+ 		$("#movimentacaoTable tr").each(function(){
+ 			var dataFiltrada = $(this).children("td:nth-child(2)").text()
+ 			var data = dataFiltrada.split('/');
+			var dataNova = data[2] + "-" + data[1] + "-" + data[0];
+ 			if(dataNova != value){
+ 				console.log(dataNova);
+ 				console.log(value);
+ 				$(this).hide()
+ 			}
+ 			else{
+ 				$(this).show();
+ 			}
+ 		});
+ 	}
+	</script>
+	</html>

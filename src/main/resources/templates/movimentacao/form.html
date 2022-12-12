@@ -1,0 +1,71 @@
+<html xmlns:th="http://www.thymeleaf.org">
+     <head th:replace="layout :: html_head">
+     	<meta charset="UTF-8" />
+     </head>
+     <body>
+     	<header th:replace="layout :: header"></header>
+     	<main>
+     		<div class="p-5 bg-light border rounded-3">
+	          	<h1 th:if="${movimentacao.id == null}">Nova Movimentação</h1>
+				<h1 th:if="${movimentacao.id != null}">Editando Movimentação</h1>
+				
+	        	<p th:if="${movimentacao.id == null}">Crie aqui as movimentações financeiras para seu comércio</p>
+        		<p th:if="${movimentacao.id != null}">Altere aqui as movimentações financeiras para seu comércio</p> 	  
+	      	</div>
+	      	<div th:replace="layout :: errorsAndSuccesses"></div>
+	        <form th:action="@{/api/movimentacoes}"
+				th:method="@{${movimentacao.id == null} ? 'post' : 'put'}"
+				th:object="${movimentacao}"
+				redirect="/movimentacoes">
+				<input type="hidden" th:field="*{id}" />
+	
+				<div class="form-group my-2">
+					<label for="descricao">Descrição</label>
+					<input id="descricao" name="descricao<" type="text" class="form-control" th:field="*{descricao}" />
+				</div>
+				 
+				<div class="form-group my-2">
+					<label for="dataMovimentacao">Data Movimentação</label>
+					<input id="dataMovimentacao" name="dataMovimentacao" type="date" class="form-control" th:value="${movimentacao.dataMovimentacao == null? #dates.format(#dates.createNow(),'YYYY-MM-dd') : movimentacao.dataMovimentacao}"/>
+				</div>
+				
+				<div class="form-group my-2">
+					<label for="dataCobranca">Data Cobrança</label>
+					<input id="dataCobranca" name="dataCobranca" type="date" class="form-control" th:value="${movimentacao.dataCobranca == null? #dates.format(#dates.createNow(),'YYYY-MM-dd') : movimentacao.dataCobranca}"/>
+				</div>
+				
+				<div class="form-group my-2">
+					<label for="pago">Movimentação está pré-paga?</label>
+					<input id="pago" name="pago" type="checkbox" min="0" th:checked="${movimentacao.pago == true}" />
+				</div>
+				
+				<div class="form-group my-2">
+					<label for="valor">Valor</label>
+					<input id="valor" name="valor" type="number" min="0" class="form-control" th:field="*{valor}" />
+				</div>
+				 
+				 <div class="form-group my-2">
+				 	<label for="cliente">Cliente (opcional)</label>
+					<select name="cliente" class="form-control">
+						 <option value="">Selecione o Cliente</option>
+				 		 <option th:each="cliente : ${clientes}" th:selected="${movimentacao.cliente==cliente}" th:value="${'&quot;id&quot;:' + cliente.id + ', &quot;divida&quot;:' + cliente.divida + ', &quot;nome&quot;: &quot;' + cliente.nome + '&quot;, &quot;email&quot;: &quot;' + cliente.email + '&quot;, &quot;cpf&quot;: &quot;' + cliente.cpf + '&quot;, &quot;telefone&quot;: &quot;' + cliente.telefone + '&quot;, &quot;endereco&quot;: &quot;' + cliente.endereco + '&quot;'}" th:text="${cliente.nome}"></option>
+					</select>
+				 </div>
+				 
+				 <div class="form-group my-2">
+				 	<label for="status">Tipo De Movimentação</label>
+					<select name="status" class="form-control">
+						 <option value="">Selecione o tipo de movimentação</option>
+				 		 <option th:each="status : ${statuses}" th:value="${status}" th:text="${status}" th:selected="${movimentacao.status==status}"></option>
+					</select>
+				 </div>
+
+				<div class="form-group my-2">
+					<button class="btn btn-success">Confirmar</button>
+					<a th:href="@{/movimentacoes}" class="btn btn-secondary">Voltar</a>
+				</div>
+			</form>
+        </main>
+        <footer th:replace="layout :: footer"></footer>
+	 </body>
+</html>

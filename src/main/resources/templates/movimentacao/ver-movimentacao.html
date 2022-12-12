@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="layout :: html_head">
+		<meta charset="UTF-8">
+	</head>
+	<body>
+		<header th:replace="layout :: header"></header>
+		<main>
+			<div class="p-5 bg-light border rounded-3">
+				<h6>ID: [[${movimentacao.id}]]</h6>
+				<h6>Data Movimentação: [[${movimentacao.dataMovimentacao}]]</h6>
+				<h6>Data Cobrança: [[${movimentacao.dataCobranca}]]</h6>
+				<h6>Status: [[${movimentacao.status}]]</h6>
+				<h6>Valor: [[${movimentacao.valor}]]</h6>
+				<h6>Descrição: [[${movimentacao.descricao}]]</h6>
+				<h6 th:if="${movimentacao.cliente != null}">Cliente: <a th:href="@{/clientes/{id}(id = ${movimentacao.cliente.id})}">[[${movimentacao.cliente.nome}]]</a></h6>
+				<a th:href="@{/movimentacoes/}" class="btn btn-primary">Voltar</a>
+				
+			</div>
+		</main>
+		<footer th:replace="layout :: footer"></footer>
+	</body>
+</html>

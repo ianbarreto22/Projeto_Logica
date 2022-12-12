@@ -1,0 +1,101 @@
+ <html xmlns:th="http://www.thymeleaf.org">
+     <head th:replace="layout :: html_head">
+     	<meta charset="UTF-8"/>
+     	<style>
+     		button.btn.btn-outline-success {margin-left: 5px;}
+     	</style>
+     </head>
+     <body>
+     	<header th:replace="layout :: header"></header>
+     	<main>
+     		<div class="p-5 bg-light border rounded-3">
+	        	<h1>Movimentações</h1>
+	        	<p>Movimentações financeiras do seu comércio</p>
+	        	
+				<p><b>Balanço Diario:</b> [[${'R&#36; ' + #numbers.formatDecimal(balancoDiario, 0, 'COMMA', 2, 'POINT')}]]</p>
+				<a th:href="@{/movimentacoes/print.csv}" class="btn btn-primary" type="button"><i class="fas fa-print"></i>&emsp;Imprimir relatório</a>
+	       		<a th:href="@{/movimentacoes/new}" class="btn btn-outline-success" type="button">Nova movimentação</a>
+	        </div>
+	        <div th:replace="layout :: errorsAndSuccesses"></div>
+			<hr class="my-2" />		
+			
+			<div class="p-3 bg-light border rounded-3">
+	        	<h3>Tipos de Movimentações</h3>
+	        	<p>Filtre as movimentações do seu comércio de acordo com o seu tipo.</p>
+	        	
+	       		<button th:each="status : ${statuses}" class="btn mx-1 btn-outline-info" onclick="filtrar(this.innerHTML)">[[${status}]]</button>
+	       		<a th:href="@{/movimentacoes/}" class="btn btn-outline-danger" type="button">Limpar filtros</a>
+	        </div>
+	        
+	        <hr class="my-2" />	
+			
+			<div class="p-3 bg-light border rounded-3">
+	        	<h3>Categoria das Movimentações</h3>
+	        	<p>Filtre as movimentações do seu comércio de acordo com a sua categoria.</p>
+	        	
+	       		<button th:each="categoria : ${categories}" class="btn mx-1 btn-outline-info" onclick="filtrarCategoria(this.innerHTML)">[[${categoria}]]</button>
+	       		<a th:href="@{/movimentacoes/}" class="btn btn-outline-danger" type="button">Limpar filtros</a>
+	        </div>
+			
+			<hr class="my-2" />	
+			<table class="table table-bordered movimentacao-table">
+			  <thead>
+			    <tr>
+			      <th scope="col">Data</th>
+			      <th>Valor</th> 
+				  <th>Data de cobrança</th> 
+				  <th>Descrição</th>
+				  <th>Tipo</th>
+				  <th>Categoria</th>
+				  <th>Ações</th>
+			    </tr>
+			  </thead>
+			  <tbody id="movimentacaoTable">
+			    <tr th:each="movimentacao : ${listMovimentacoes}">
+					<td th:text="${#temporals.format(movimentacao.dataMovimentacao, 'dd/MM/yyyy')}"></td> 
+					<td th:text="${'R&#36; ' + #numbers.formatDecimal(movimentacao.valor, 0, 'COMMA', 2, 'POINT')}"></td> 
+					<td th:text="${#temporals.format(movimentacao.dataCobranca, 'dd/MM/yyyy')}"></td>
+					<td th:text="${movimentacao.descricao}"></td>  
+					<td th:text="${movimentacao.status}"></td>
+					<td th:text="${movimentacao.categoria}"></td>
+					<td>
+						<a th:href="@{/movimentacoes/{id}(id = ${movimentacao.id})}" class="btn btn-primary"><i class="fas fa-eye"></i>&ensp;Ver</a>
+						<a th:href="@{/movimentacoes/edit/{id}(id = ${movimentacao.id})}" class="btn btn-secondary"><i class="fas fa-edit"></i>&ensp;Editar</a> 
+						<a th:href="@{/movimentacoes/delete/{id}(id = ${movimentacao.id})}" class="btn btn-danger"><i class="fas fa-eraser"></i>&ensp;Excluir</a>
+					</td>
+				</tr>
+			  </tbody>
+			</table>
+        </main>
+        <footer th:replace="layout :: footer"></footer>
+	 </body>
+	 <script type="text/javascript">
+	 	function filtrar(value){
+	 		$("#movimentacaoTable tr").each(function(){
+	 			var txt = $(this).children("td:nth-child(5)").text()
+	 			if(txt != value){
+	 				//console.log(txt);
+	 				//console.log(value);
+	 				$(this).hide()
+	 			}
+	 			else{
+	 				$(this).show();
+	 			}
+	 		});
+	 	} 
+	 	
+	 	function filtrarCategoria(value){
+	 		$("#movimentacaoTable tr").each(function(){
+	 			var txt = $(this).children("td:nth-child(6)").text()
+	 			if(txt != value){
+	 				//console.log(txt);
+	 				//console.log(value);
+	 				$(this).hide()
+	 			}
+	 			else{
+	 				$(this).show();
+	 			}
+	 		});
+	 	} 
+	 </script>
+</html>

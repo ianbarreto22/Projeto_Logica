@@ -1,0 +1,33 @@
+.movimentacao-table td, .movimentacao-table th {
+    padding: 15px;
+}
+
+/* Extra small devices (phones, less than 768px) */
+/* No media query since this is the default in Bootstrap */
+.grafico {
+	display: inline-block;
+	width: 100%;
+}
+
+.grafico-outer {
+	overflow-x: auto;
+}
+
+.custom-border-bottom {
+	border-bottom: 1px solid var(--accent-color) !important;
+}
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+	
+}
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+	
+}
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+	
+}

@@ -1,0 +1,112 @@
+<html xmlns:th="http://www.thymeleaf.org">
+     <head th:replace="layout :: html_head">
+     	<meta charset="UTF-8"/>
+     </head>
+     <body>
+     	<header th:replace="layout :: header"></header>
+     	<main>
+     	
+     		<div th:if="${proprietario.nome == null}" class="alert my-3 alert-danger">
+     			<p>Você ainda não cadastrou as informações do seu comércio!</p>
+ 				<a type="button" href="/meu-comercio/editar" class="btn mx-1 btn-outline-danger">Editar Comércio</a>
+     		</div>
+     	
+     		<div class="p-5 bg-light border rounded-3">
+	        	<h1>Clientes Devendo</h1>
+	        	<p>Lista de clientes que estão devendo e o prazo se encerra hoje.</p>
+	        	
+	        	<table class="table table-bordered movimentacao-table">
+	        		<thead th:if="${movimentacoesFiado.size != 0}">
+	        			<tr>
+	        				<th>Cliente</th>
+	        				<th>Valor</th>
+	        				<th>Telefone</th>
+	        			</tr>
+	        		</thead>
+	        		
+	        		<thead th:if="${movimentacoesFiado.size == 0}">
+	        			<tr>
+	        				<th>Nenhum cliente está devendo hoje.</th>
+	        			</tr>
+	        		</thead>
+	        		
+	        		<tbody>
+	        			<tr th:each="movimentacao : ${movimentacoesFiado}">
+	        				<td th:text="${movimentacao.cliente.nome}"></td>
+	        				<td th:text="${movimentacao.valor}"></td>
+	        				<td th:text="${movimentacao.cliente.telefone}"></td>
+	        			</tr>
+	        		</tbody>
+	        	</table>
+	        	
+	        	
+	       		<a th:href="@{/clientes-devendo}" class="btn btn-outline-success" type="button">Clientes Devendo</a>
+	       		<a th:href="@{/movimentacoes-fiado}" class="btn btn-outline-success" type="button">Movimentações não pagas</a>
+	        </div>
+	        <div class="p-5 mt-3 bg-light border rounded-3">
+	        	<h2>Gráficos</h2>
+	        	<p><strong>Gráfico 1: </strong> Balanço diário (em reais) nos últimos 30 dias.</p>
+		        <div class="text-center grafico-outer">
+		        	<div class="grafico graf-movimentacoes" style="height: 350px; width: 1100px;"></div>
+	        	</div>
+	        	<hr/>
+	        	<p><strong>Gráfico 2: </strong> Dívida dos (até 10) clientes que mais devem.</p>
+		        <div class="text-center grafico-outer">
+		        	<div class="grafico graf-clientes" style="height: 350px; width: 600px;"></div>
+	        	</div>
+	       	</div>
+        </main>
+        <footer th:replace="layout :: footer"></footer>
+	 	<script th:inline="javascript">
+	 		var movimentacoes =/*[[${balancosRecentes}]]*/ null;
+	 	
+	 		if(movimentacoes != null) {
+	 			var dataInicio = new Date();
+	 			dataInicio.setDate(dataInicio.getDate()-30);
+	 			console.log(dataInicio);
+	 			var balancosDatas = [];
+	 			var balancos = [];
+				
+	 			const options = { weekday: undefined, year: undefined, month: 'numeric', day: 'numeric' };
+	 			
+	 			for(i = 0; i < movimentacoes.length; i++) {
+	 				dataInicio.setDate(dataInicio.getDate()+1);
+	 				balancosDatas.push(dataInicio.toLocaleDateString("pt-BR", options));
+	 				balancos.push(movimentacoes[i]);
+				}
+	 			
+		 		new Chartist.Line('.graf-movimentacoes', {
+		 		  labels: balancosDatas,
+		 		  series: [balancos]
+		 		}, {
+		 		  fullWidth: true,
+		 		  chartPadding: {
+		 		    right: 40
+		 		  }
+		 		});
+	 		}
+	 		
+	 		var clientes =/*[[${clientesDevendo}]]*/ null;
+	 		
+	 		if(clientes != null) {
+	 			var clientesDevendo = [];
+	 			var clientesDivida = [];
+				
+	 			for(i = 0; i < clientes.length; i++) {
+	 				clientesDevendo.push(clientes[i].nome);
+	 				clientesDivida.push(clientes[i].divida);
+	 				
+	 				if(i >= 9) break;
+				}
+	 			
+		 		var chart = new Chartist.Bar('.graf-clientes', 
+		 		{
+		 		  labels: clientesDevendo,
+		 		  series: [
+		 			 clientesDivida
+		 		  ]
+		 		});
+	 		}
+	 	</script>
+	 </body>
+</html>

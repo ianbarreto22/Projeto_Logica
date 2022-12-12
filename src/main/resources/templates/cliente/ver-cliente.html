@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="layout :: html_head">
+		<meta charset="UTF-8">
+	</head>
+	<body>
+		<header th:replace="layout :: header"></header>
+		<main>
+			<div class="p-5 bg-light border rounded-3">
+				<h6>ID: [[${cliente.id}]]</h6>
+				<h6>Nome: [[${cliente.nome}]]</h6>
+				<h6>E-mail: [[${cliente.email}]]</h6>
+				<h6>CPF: [[${cliente.cpf}]]</h6>
+				<h6>Dívida: [[${cliente.divida}]]</h6>
+				<h6>Telefone: [[${cliente.telefone}]]</h6>
+				<h6>Endereço: [[${cliente.endereco}]]</h6>
+				<a th:href="@{/clientes/}" class="btn btn-primary">Voltar</a>
+				
+			</div>
+	        <table class="table table-bordered movimentacao-table">
+	        		<thead th:if="${movimentacoes.size != 0}">
+	        			<tr>
+	        				<th>Descrição</th>
+	        				<th>Valor</th>
+	        				<th>Data Movimentação</th>
+	        				<th>Data Cobrança</th>
+	        				<th>Categoria</th>
+	        				<th>Ação</th>
+	        			</tr>
+	        		</thead>
+	        		
+	        		<thead th:if="${movimentacoes.size == 0}">
+	        			<tr>
+	        				<th>Cliente não possui movimentações.</th>
+	        			</tr>
+	        		</thead>
+	        		
+	        		<tbody>
+	        			<tr th:each="movimentacao : ${movimentacoes}">
+	        				<td th:text="${movimentacao.descricao}"></td>
+	        				<td th:text="${movimentacao.valor}"></td>
+	        				<td th:text="${#temporals.format(movimentacao.dataMovimentacao, 'dd/MM/yyyy')}"></td>
+	        				<td th:text="${#temporals.format(movimentacao.dataCobranca, 'dd/MM/yyyy')}"></td>
+	        				<td th:text="${movimentacao.categoria}"></td>
+	        				<td>
+	        					<a th:href="@{/movimentacoes/{id}(id = ${movimentacao.id})}" class="btn btn-primary"><i class="fas fa-eye"></i>&ensp;Ver</a>
+	        				</td>
+	        			</tr>
+	        		</tbody>
+	        </table>
+		</main>
+		<footer th:replace="layout :: footer"></footer>
+	</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="layout :: head">
+		<meta charset="UTF-8">
+	</head>
+	<body>
+		<header th:replace="layout :: header"></header>
+		<main>
+			<div class="p-5 bg-light border rounded-3">
+				<h1>Editar comércio</h1>
+				<p>Altere aqui as informações do seu comércio</p>
+			</div>
+			
+			<div th:replace="layout :: errorsAndSuccesses"></div>
+			
+			<form th:action="@{/api/usuario}"
+				th:method="put"
+				th:object="${proprietario}"
+				redirect="/meu-comercio">
+				
+				<input type="hidden" th:field="*{id}" />
+				
+				<div class="form-group my-2">
+					<label for="nome">Nome</label>
+					<input id="nome" name="nome" type="text" class="form-control" th:field="*{nome}" required/>
+				</div>
+				
+				<div class="form-group my-2">
+					<label for="email">E-mail</label>
+					<input id="email" name="email" type="email" placeholder="email@exemplo.com" class="form-control" th:field="*{email}" required/>
+				</div>
+				
+				<div class="form-group my-2">
+					<label for="cnpj">CNPJ</label>
+					<input id="cnpj" name="cnpj" type="text" placeholder="00.000.000/0000-00" maxlength="18" class="form-control" th:field="*{cnpj}" required/>
+				</div>
+				
+				<div class="form-group my-2">
+					<label for="nomeComercio">Nome do Comércio</label>
+					<input id="nomeComercio" name="nomeComercio" type="text" class="form-control" th:field="*{nomeComercio}" required/>
+				</div>
+				
+				<div class="form-group my-2">
+					<label for="cor">Cor</label>
+					<input id="cor" name="cor" type="color" th:field="*{cor}" required/>
+				</div>
+				
+				<div class="form-group my-2">
+					<button class="btn btn-success">Confirmar</button>
+					<a th:href="@{/meu-comercio}" class="btn btn-secondary">Voltar</a>
+				</div>
+				
+			</form>
+			
+		</main>
+		<footer th:replace="layout :: footer"></footer>
+	</body>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.11.2/jquery.mask.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function (){
+			var inputCnpj = $("#cnpj");
+			inputCnpj.mask('00.000.000/0000-00');
+		});
+	</script>
+</html>

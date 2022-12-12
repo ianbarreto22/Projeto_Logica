@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="layout :: html_head">
+		<meta charset="UTF-8"/>
+	</head>
+	<body>
+		<header th:replace="layout :: header"></header>
+		<main>
+			<div class="p-5 bg-light border rounded-3">
+				<h1 th:if="${cliente.id == null}">Novo Cliente</h1>
+				<h1 th:if="${cliente.id != null}">Editando Cliente</h1>
+				
+				<p th:if="${cliente.id == null}">Crie aqui clientes para seu comércio</p>
+				<p th:if="${cliente.id != null}">Altere aqui clientes para seu comércio</p>
+			</div>
+			<div th:replace="layout :: errorsAndSuccesses"></div>
+			<form th:action="@{/api/clientes}"
+				th:method="@{${cliente.id == null} ? 'post' : 'put'}"
+				th:object="${cliente}"
+				redirect="/clientes">
+				
+				<input type="hidden" th:field="*{id}" />
+				
+				<div class="form-group my-2">
+					<label for="nome">Nome</label>
+					<input id="nome" name="nome" type="text" class="form-control" th:field="*{nome}" required/>
+				</div>
+				
+				<div class="form-group my-2">
+					<label for="email">E-mail</label>
+					<input id="email" name="email" type="email" placeholder="email@exemplo.com" class="form-control" th:field="*{email}" required/>
+				</div>
+				
+				<div class="form-group my-2">
+					<label for="cpf">CPF</label>
+					<input id="cpf" name="cpf" type="text" placeholder="000.000.000-00" maxlength="14" class="form-control" th:field="*{cpf}" required/>
+				</div>
+				
+				<div class="form-group my-2">
+					<label for="telefone">Telefone</label>
+					<input id="telefone" name="telefone" type="tel" placeholder="(99) 99999-9999" maxlength="15" pattern=".{15}" class="form-control" th:field="*{telefone}" required/>
+				</div>
+				
+				<div class="form-group my-2">
+					<label for="endereco">Endereço</label>
+					<input id="endereco" name="endereco" type="text" class="form-control" th:field="*{endereco}" required/>
+				</div>
+				
+				<div class="form-group my-2">
+					<button class="btn btn-success">Confirmar</button>
+					<a th:href="@{/clientes}" class="btn btn-secondary">Voltar</a>
+				</div>
+				
+			</form>
+		</main>
+		<footer th:replace="layout :: footer"></footer>
+	</body>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.11.2/jquery.mask.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function (){
+			var inputCpf = $("#cpf");
+			inputCpf.mask('000.000.000-00', {reverse: true});
+			
+			var inputTel = $("#telefone");
+			inputTel.mask('(00) 00000-0000');
+		});
+	</script>
+</html>

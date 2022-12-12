@@ -1,0 +1,27 @@
+<html xmlns:th="http://www.thymeleaf.org">
+     <head th:replace="layout :: html_head">
+     	<meta charset="UTF-8"/>
+     </head>
+     <body>
+     	<header th:replace="layout :: header"></header>
+     	<main>
+     		<div class="row text-center">
+		        <div class="col-sm-12">
+		            <div class="error-template">
+		                <h1>Eita! Ocorreu um erro:</h1>
+		                <i><h2 th:text="${errorMessage}"></h2></i>
+		                <div class="error-details" th:text="${errorDescription}">
+		                    
+		                </div>
+		                <div class="mt-2 error-actions">
+		                    <a href="/" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-home"></span>
+		                        Página inicial
+		                    </a>
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+        </main>
+        <footer th:replace="layout :: footer"></footer>
+	 </body>
+</html>

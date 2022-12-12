@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="layout :: html_head">
+		<meta charset="UTF-8"/>
+	</head>
+	<body>
+		<header th:replace="layout :: header"></header>
+		
+		<main>
+			
+			<div class="p-5 bg-light border rounded-3">
+				<h1>Meu Comércio</h1>
+				<p>Os dados cadastrados do seu comércio</p>
+				<a th:href="@{/meu-comercio/editar}" class="btn btn-outline-success" type="button">Editar comércio</a>
+				<a th:href="@{/meu-comercio/dividas}" class="btn btn-outline-danger" type="button">Ver dívidas</a>
+			</div>
+			
+			<div th:replace="layout :: errorsAndSuccesses"></div>
+			
+			<div class="p-5 mt-2 bg-light border rounded-3">
+			
+				<h6>Nome da empresa: [[${proprietario.nomeComercio}]]</h6>
+				
+				<h6>Cor:  <input type="color" th:value="${proprietario.cor}" disabled></h6>
+				
+				<h6>Nome do proprietário: [[${proprietario.nome}]]</h6>
+				
+				<h6>E-mail: [[${proprietario.email}]]</h6>
+				
+				<h6>CNPJ: [[${proprietario.cnpj}]]</h6>
+			
+			</div>
+			
+		</main>
+		
+		<footer th:replace="layout :: footer"></footer>
+	</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="layout :: html_head">
+		<meta charset="UTF-8"/>
+	</head>
+	<body>
+		<header th:replace="layout :: header"></header>
+		<main>
+			<div class="p-5 bg-light border rounded-3">
+				<h1>Clientes</h1>
+				<p>Os clientes cadastrados no seu comércio</p>
+				<a th:href="@{/clientes/new}" class="btn btn-outline-success" type="button">Novo cliente</a>
+			</div>
+			<div th:replace="layout :: errorsAndSuccesses"></div>
+			<hr class="my-2">
+			<table class="table table-bordered movimentacao-table">
+				<thead>
+					<tr>
+						<th>Nome</th>
+						<th>E-mail</th>
+						<th>Telefone</th>
+						<th>Endereço</th>
+						<th>Divida</th>
+						<th>Ações</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="cliente : ${listClientes}"> 
+						<td th:text="${cliente.nome}"/>
+						<td th:text="${cliente.email}"/>
+						<td th:text="${cliente.telefone}"/>
+						<td th:text="${cliente.endereco}"/>
+						<td th:text="${'R$ ' + cliente.divida}"/>
+						<td>
+							<a th:href="@{/clientes/{id}(id = ${cliente.id})}" class="btn btn-primary"><i class="fas fa-eye"></i>&ensp;Ver</a>
+							<a th:href="@{/clientes/edit/{id}(id = ${cliente.id})}" class="btn btn-secondary"><i class="fas fa-edit"></i>&ensp;Editar</a> 
+							<a th:href="@{/clientes/delete/{id}(id = ${cliente.id})}" class="btn btn-danger"><i class="fas fa-eraser"></i>&ensp;Excluir</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</main>
+		<footer th:replace="layout :: footer"></footer>
+	</body>
+</html>

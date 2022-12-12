@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="layout :: head">
+		<meta charset="UTF-8">
+	</head>
+	<body>
+		<header th:replace="layout :: header"></header>
+		<main>
+			<div class="p-5 bg-light border rounded-3">
+	        	<h1>Clientes Devendo</h1>
+	        	<p>Lista de clientes que estão devendo.</p>
+	        </div>
+	        
+	        <table class="table table-bordered movimentacao-table">
+	        		<thead th:if="${clientes.size != 0}">
+	        			<tr>
+	        				<th>Cliente</th>
+	        				<th>Valor</th>
+	        				<th>Telefone</th>
+	        				<th>Endereço</th>
+	        			</tr>
+	        		</thead>
+	        		
+	        		<thead th:if="${clientes.size == 0}">
+	        			<tr>
+	        				<th>Nenhum cliente está devendo.</th>
+	        			</tr>
+	        		</thead>
+	        		
+	        		<tbody>
+	        			<tr th:each="cliente : ${clientes}">
+	        				<td th:text="${cliente.nome}"></td>
+	        				<td th:text="${cliente.divida}"></td>
+	        				<td th:text="${cliente.telefone}"></td>
+	        				<td th:text="${cliente.endereco}"></td>
+	        			</tr>
+	        		</tbody>
+	        </table>
+		</main>
+		<footer th:replace="layout :: footer"></footer>
+	</body>
+	</html>
